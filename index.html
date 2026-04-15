@@ -23,11 +23,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#1a1a1a;
 .badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
 .up{background:#0e2a47;color:#70b8f5}.past{background:#2a2a2a;color:#666}
 .slist{display:flex;flex-direction:column;gap:8px}
-.si{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:#2a2a2a;border:1px solid #333}
-.snum{font-size:12px;color:#666;min-width:18px;font-weight:600}
+.si{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:10px;background:#2a2a2a;border:1px solid #333}
+.snum{font-size:12px;color:#666;min-width:18px;font-weight:600;padding-top:2px}
 .sinfo{flex:1;min-width:0}
-.sname{font-size:14px;font-weight:500}
-.slink{font-size:12px;color:#4d9de0;text-decoration:none;margin-top:2px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sname{font-size:14px;font-weight:500;margin-bottom:4px}
+.smeta{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.tom-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:#2a1a3a;color:#c084fc}
+.tom-orig{background:#1a2a1a;color:#4ade80}
+.sbtn-row{display:flex;gap:6px;flex-wrap:wrap}
+.sbtn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;text-decoration:none;border:none;cursor:pointer}
+.sbtn-yt{background:#2a1a1a;color:#f87171}
+.sbtn-yt:hover{background:#3a1a1a}
+.sbtn-cifra{background:#1a2a1a;color:#4ade80}
+.sbtn-cifra:hover{background:#1a3a1a}
+.yt-thumb{width:56px;height:42px;border-radius:6px;object-fit:cover;flex-shrink:0}
 .empty{text-align:center;padding:1.5rem;color:#666;font-size:14px}
 .pin-wrap{text-align:center;padding:2rem 0}
 .pin-wrap h2{font-size:17px;font-weight:600;margin-bottom:6px}
@@ -39,13 +48,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#1a1a1a;
 .btn:hover{background:#333}
 .btn-p{background:#5b4fcf;color:#fff;border:none;width:100%;padding:11px;font-size:15px;border-radius:10px;margin-top:8px;cursor:pointer;font-weight:500;font-family:inherit;display:block}
 .btn-p:hover{background:#4a3fbf}
-.btn-r{padding:5px 10px;font-size:12px;color:#e07070;border:none;background:transparent;border-radius:6px;cursor:pointer;font-family:inherit}
+.btn-r{padding:5px 10px;font-size:12px;color:#e07070;border:none;background:transparent;border-radius:6px;cursor:pointer;font-family:inherit;flex-shrink:0}
 .btn-danger{background:#3a1010;color:#e07070;border:1px solid #5a2020;width:100%;padding:11px;font-size:14px;border-radius:10px;margin-top:4px;cursor:pointer;font-family:inherit}
-.btn-danger:hover{background:#4a1515}
 .fg{margin-bottom:1rem}
 .fg label{font-size:13px;color:#aaa;display:block;margin-bottom:6px;font-weight:500}
-.fg input{width:100%;padding:10px 12px;border:1px solid #444;border-radius:9px;background:#2a2a2a;color:#fff;font-size:14px;outline:none;font-family:inherit}
-.fg input:focus{border-color:#5b4fcf}
+.fg input,.fg select{width:100%;padding:10px 12px;border:1px solid #444;border-radius:9px;background:#2a2a2a;color:#fff;font-size:14px;outline:none;font-family:inherit}
+.fg input:focus,.fg select:focus{border-color:#5b4fcf}
+.fg select option{background:#2a2a2a}
+.fg-row{display:flex;gap:10px}
+.fg-row .fg{flex:1}
 .divider{border:none;border-top:1px solid #333;margin:1.25rem 0}
 .ei{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;border:1px solid #333;cursor:pointer;margin-bottom:6px;background:#2a2a2a}
 .ei.sel{border-color:#5b4fcf;background:#1e1a40}
@@ -64,7 +75,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#1a1a1a;
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;border:1px solid #444;padding:10px 24px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
 .toast.on{opacity:1}
 .nev{text-align:center;padding:3rem 1rem;color:#666}
-.yt-thumb{width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -92,7 +102,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#1a1a1a;
     <div id="lp" style="display:none">
       <div class="leader-nav">
         <button class="lnav active" id="ln0" onclick="lTab(0)">&#127926; Eventos</button>
-        <button class="lnav" id="ln1" onclick="lTab(1)">&#9881; Configuracoes</button>
+        <button class="lnav" id="ln1" onclick="lTab(1)">&#9881; Config</button>
       </div>
       <div id="lp0">
         <div class="card">
@@ -119,6 +129,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#1a1a1a;
               <label>Nome da musica</label>
               <input type="text" id="mn" placeholder="Preenchido automaticamente ou digite"/>
             </div>
+            <div class="fg-row">
+              <div class="fg">
+                <label>Tom</label>
+                <select id="mt">
+                  <option value="Original">Tom original</option>
+                  <option value="C">C (Do)</option>
+                  <option value="C#">C# (Do#)</option>
+                  <option value="D">D (Re)</option>
+                  <option value="D#">D# (Re#)</option>
+                  <option value="E">E (Mi)</option>
+                  <option value="F">F (Fa)</option>
+                  <option value="F#">F# (Fa#)</option>
+                  <option value="G">G (Sol)</option>
+                  <option value="G#">G# (Sol#)</option>
+                  <option value="A">A (La)</option>
+                  <option value="A#">A# (La#)</option>
+                  <option value="B">B (Si)</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Observacao (opcional)</label>
+                <input type="text" id="mobs" placeholder="Ex: Repetir ponte"/>
+              </div>
+            </div>
             <button class="btn-p" onclick="adicionarMusica()">+ Adicionar musica</button>
           </div>
         </div>
@@ -144,7 +178,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#1a1a1a;
 </div>
 <div class="toast" id="tk"></div>
 <script>
-var KEY="sl10";
+var KEY="sl11";
 var cfg={pin:"1234"};
 var evs=[];
 var sid=null;
@@ -189,6 +223,14 @@ function getYtId(url){
   return m?m[1]:null;
 }
 
+function cifraUrl(name){
+  var slug=name.toLowerCase()
+    .replace(/[^a-z0-9 ]/g,"")
+    .trim()
+    .replace(/ +/g,"-");
+  return "https://www.cifraclub.com.br/"+slug+"/";
+}
+
 function onLinkInput(){
   var url=document.getElementById("ml").value.trim();
   var fe=document.getElementById("fetching");
@@ -205,21 +247,38 @@ function fetchYtTitle(id){
   var fe=document.getElementById("fetching");
   var fo=document.getElementById("fetch-ok");
   var mn=document.getElementById("mn");
-  var url="https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v="+id+"&format=json";
-  fetch(url)
+  fetch("https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v="+id+"&format=json")
     .then(function(r){return r.json();})
     .then(function(d){
       if(d&&d.title){
         mn.value=d.title;
         fe.className="fetching";
         fo.className="fetch-ok on";
-      }else{
-        fe.className="fetching";
-      }
+      }else{fe.className="fetching";}
     })
-    .catch(function(){
-      fe.className="fetching";
-    });
+    .catch(function(){fe.className="fetching";});
+}
+
+function buildSongHtml(m, i, showRemove){
+  var isOrig=m.tom==="Original"||!m.tom;
+  var tomBadge=isOrig
+    ? "<span class=\"tom-badge tom-orig\">&#127925; Tom original</span>"
+    : "<span class=\"tom-badge\">&#127925; Tom "+esc(m.tom)+"</span>";
+  var thumb=m.ytid?"<img class=\"yt-thumb\" src=\"https://img.youtube.com/vi/"+m.ytid+"/mqdefault.jpg\" alt=\"\"/>":"";
+  var ytBtn=m.link?"<a class=\"sbtn sbtn-yt\" href=\""+esc(m.link)+"\" target=\"_blank\">&#9654; YouTube</a>":"";
+  var cifraBtn="<a class=\"sbtn sbtn-cifra\" href=\""+cifraUrl(m.name)+"\" target=\"_blank\">&#127928; Cifra</a>";
+  var removeBtn=showRemove?"<button class=\"btn-r\" onclick=\"delM('"+m.id+"')\">remover</button>":"";
+  var obs=m.obs?"<div style=\"font-size:11px;color:#aaa;margin-top:4px\">&#128172; "+esc(m.obs)+"</div>":"";
+  return "<div class=\"si\">"+thumb+
+    "<span class=\"snum\">"+(i+1)+"</span>"+
+    "<div class=\"sinfo\">"+
+      "<div class=\"sname\">"+esc(m.name)+"</div>"+
+      "<div class=\"smeta\">"+tomBadge+"</div>"+
+      obs+
+      "<div class=\"sbtn-row\">"+ytBtn+cifraBtn+"</div>"+
+    "</div>"+
+    removeBtn+
+  "</div>";
 }
 
 function goTab(n){
@@ -252,14 +311,7 @@ function rv(){
     h+="<span class=\"badge "+(u?"up":"past")+"\">"+( u?"Proximo":"Realizado")+"</span></div>";
     if(ss.length){
       h+="<p class=\"lbl\">"+ss.length+" musica"+(ss.length!==1?"s":"")+"</p><div class=\"slist\">";
-      for(var j=0;j<ss.length;j++){
-        var m=ss[j];
-        var thumb=m.ytid?"<img class=\"yt-thumb\" src=\"https://img.youtube.com/vi/"+m.ytid+"/default.jpg\" alt=\"\"/>":"";
-        h+="<div class=\"si\">"+thumb+"<span class=\"snum\">"+(j+1)+"</span><div class=\"sinfo\">";
-        h+="<div class=\"sname\">"+esc(m.name)+"</div>";
-        if(m.link)h+="<a class=\"slink\" href=\""+esc(m.link)+"\" target=\"_blank\">Abrir no YouTube</a>";
-        h+="</div></div>";
-      }
+      for(var j=0;j<ss.length;j++){h+=buildSongHtml(ss[j],j,false);}
       h+="</div>";
     }else{
       h+="<div class=\"empty\">Nenhuma musica adicionada ainda.</div>";
@@ -327,14 +379,7 @@ function rsm(){
   document.getElementById("smt").textContent="Musicas: "+e.name;
   var ss=e.songs||[],h="";
   if(ss.length){
-    for(var j=0;j<ss.length;j++){
-      var m=ss[j];
-      var thumb=m.ytid?"<img class=\"yt-thumb\" src=\"https://img.youtube.com/vi/"+m.ytid+"/default.jpg\" alt=\"\"/>":"";
-      h+="<div class=\"si\">"+thumb+"<span class=\"snum\">"+(j+1)+"</span><div class=\"sinfo\">";
-      h+="<div class=\"sname\">"+esc(m.name)+"</div>";
-      if(m.link)h+="<a class=\"slink\" href=\""+esc(m.link)+"\" target=\"_blank\">Abrir no YouTube</a>";
-      h+="</div><button class=\"btn-r\" onclick=\"delM('"+m.id+"')\">remover</button></div>";
-    }
+    for(var j=0;j<ss.length;j++){h+=buildSongHtml(ss[j],j,true);}
   }else{
     h="<div class=\"empty\" style=\"padding:.5rem 0\">Nenhuma musica ainda</div>";
   }
@@ -361,7 +406,9 @@ function delEv(id){
 
 function adicionarMusica(){
   var ne=document.getElementById("mn"),le=document.getElementById("ml");
+  var te=document.getElementById("mt"),oe=document.getElementById("mobs");
   var n=ne.value.trim(),l=le.value.trim();
+  var t=te.value,o=oe.value.trim();
   if(!l){toast("Cole o link do YouTube!");le.focus();return;}
   if(!n){toast("Digite o nome da musica!");ne.focus();return;}
   if(!sid){toast("Selecione um evento!");return;}
@@ -370,9 +417,9 @@ function adicionarMusica(){
   if(!e)return;
   if(!e.songs)e.songs=[];
   var ytid=getYtId(l);
-  e.songs.push({id:"s"+Date.now(),name:n,link:l,ytid:ytid||""});
+  e.songs.push({id:"s"+Date.now(),name:n,link:l,ytid:ytid||"",tom:t,obs:o});
   save();
-  ne.value="";le.value="";
+  ne.value="";le.value="";te.value="Original";oe.value="";
   document.getElementById("fetching").className="fetching";
   document.getElementById("fetch-ok").className="fetch-ok";
   rsm();toast("Musica adicionada!");
